@@ -7,11 +7,12 @@ import { Typography } from '@mui/material';
 
 
 function Signup() {
+    const [email, setEmail] = React.useState("");
+    const [password, setPasswprd] = React.useState("");
     return (
         <div style={{
             paddingTop: "140px"
         }}>
-
             <div style={{
                 display: "flex",
                 justifyContent: "center",
@@ -30,36 +31,63 @@ function Signup() {
                     }
                 }>
                     <TextField
-                        id="outlined-basic"
-                        label="Username"
+                        id="email"
+                        label="Email"
                         variant="outlined"
                         fullWidth="true"
+                        onChange={(e) => {
+                            setEmail(e.target.value);
+                        }}
                     />
 
                     <br></br>
                     <br></br>
                     <TextField
-                        id="outlined-basic"
+                        id="password"
                         label="Password"
                         variant="outlined"
                         fullWidth="true"
-
+                        type={'password'}
+                        onChange={(e) => {
+                            setPasswprd(e.target.value);
+                        }}
                     />
                     <br></br>
                     <br></br>
                     <Button
                         variant="contained"
                         size={'large'}
-                        onClick= {
-                            ()=>{
-                                console.log("signup clicked");
+                        onClick={
+                            async () => {
+                                const data = {
+                                    username: email,
+                                    password
+                                };
+                                const response = await fetch('http://localhost:3000/admin/signup/',
+                                    {
+                                        method: "POST",
+                                        mode: "cors",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify(data)
+                                    })
+                                if(response.status ===200){
+                                    response.json().then(body => {
+                                        localStorage.setItem('token',body.token)
+                                    });
+                                }
+                                else{
+                                    console.log("ERROR");
+                                }
+                                    
                             }
                         }
-                        >Signup</Button>
+                    >Signup</Button>
                 </Card>
             </div>
-            </div>
-            )
+        </div>
+    )
 }
 
-            export default Signup;
+export default Signup;

@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 require('dotenv').config();
 
 
@@ -46,6 +47,7 @@ app.listen(port, () => {
 })
 
 app.use(bodyParser.json());
+app.use(cors());
 
 async function authenticateUser(request, response, next) {
   const token = getAuthToken(request);
@@ -136,12 +138,12 @@ app.post('/admin/signup', async (req, res) => {
 });
 
 app.post('/admin/login', async (req, res) => {
-  if (!req.headers.username || !req.headers.password) {
+  if (!req.body.username || !req.body.password) {
     res.status(403).json({ message: "Please give your username and password" });
   }
   else {
-    const admin = await Admin.findOne({ username: req.headers.username });
-    if (!admin || admin.password !== req.headers.password)
+    const admin = await Admin.findOne({ username: req.body.username });
+    if (!admin || admin.password !== req.body.password)
       return res.status(403).json({ message: "Invalid Login" });
     try {
       const token = generateJWT(admin.username, ADMIN_ROLE);
@@ -189,6 +191,7 @@ app.get('/admin/courses', authenticateAdmin, async (req, res) => {
 
 app.post('/users/signup', async (req, res) => {
   if (!req.body.username || !req.body.password) {
+    console.log(JSON.stringify(req.body));
     res.status(403).json({ message: "Please give your username and password" });
   }
   else {
@@ -216,12 +219,12 @@ app.post('/users/signup', async (req, res) => {
 });
 
 app.post('/users/login', async (req, res) => {
-  if (!req.headers.username || !req.headers.password) {
+  if (!req.body.username || !req.body.password) {
     res.status(403).json({ message: "Please give your username and password" });
   }
   else {
-    const user = await User.findOne({ username: req.headers.username });
-    if (!user || user.password !== req.headers.password)
+    const user = await User.findOne({ username: req.body.username });
+    if (!user || user.password !== req.body.password)
       return res.status(403).json({ message: "Invalid Login" });
     try {
       const token = generateJWT(user.username, USER_ROLE);
