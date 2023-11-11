@@ -74,7 +74,8 @@ function Signup() {
                                     })
                                 if(response.status ===200){
                                     response.json().then(body => {
-                                        localStorage.setItem('token',body.token)
+                                        localStorage.setItem('token',body.token);
+                                        window.location = '/';
                                     });
                                 }
                                 else{

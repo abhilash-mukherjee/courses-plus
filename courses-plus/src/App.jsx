@@ -20,7 +20,6 @@ function App() {
       <Appbar></Appbar>
         <Routes>
           <Route path="/login" element= {<Login></Login>} />
-          <Route path="/" element= {<Login></Login>} />
           <Route path="/signup" element= {<Signup></Signup>} />
           <Route path="/addcourse" element= {<AddCourse></AddCourse>} />
         </Routes>

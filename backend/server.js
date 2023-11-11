@@ -79,7 +79,11 @@ async function authenticateAdmin(request, response, next) {
     try {
       const decoded = jwt.verify(token, process.env.SECRET_KEY_ADMIN);
       if (decoded) {
-        const admin = await User.findOne({ username: decoded.username });
+        console.log(decoded);
+        const admin = await Admin.findOne({ username: decoded.username });
+        const allUsers = await Admin.find({});
+        console.log(admin);
+        console.log(allUsers);
         if (admin) {
           request.admin = admin;
           next();
@@ -185,6 +189,13 @@ app.put('/admin/courses/:courseId', authenticateAdmin, async (req, res) => {
 app.get('/admin/courses', authenticateAdmin, async (req, res) => {
   const courses = await Course.find({});
   res.json({ courses });
+});
+
+app.get('/admin/me', authenticateAdmin, async (req, res) => {
+  res.json({ 
+    username: req.admin.username,
+    message: "Fetched admin details successfully"
+   });
 });
 
 //user paths
