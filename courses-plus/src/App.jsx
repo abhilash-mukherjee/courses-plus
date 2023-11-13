@@ -7,6 +7,8 @@ import Appbar from './Appbar'
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Login from './Login'
 import AddCourse from './Addcourse'
+import Courses from './Courses'
+import Course from './Course'
 function App() {
 
   return (
@@ -14,7 +16,9 @@ function App() {
     <div style={{
       backgroundColor: "#eeeeee",
       width: "100vw",
-      height: "100vh"
+      minHeight: '100vh',
+      display:'flex',
+      flexDirection:'column'
     }}>
       <Router>
       <Appbar></Appbar>
@@ -22,6 +26,8 @@ function App() {
           <Route path="/login" element= {<Login></Login>} />
           <Route path="/signup" element= {<Signup></Signup>} />
           <Route path="/addcourse" element= {<AddCourse></AddCourse>} />
+          <Route path="/courses" element= {<Courses></Courses>} />
+          <Route path="/courses/:courseId" element= {<Course></Course>} />
         </Routes>
       </Router>
 
