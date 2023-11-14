@@ -1,6 +1,7 @@
 
 const express = require('express')
 const mongoose = require('mongoose');
+const { Admin, User, Course } = require('./db');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -11,36 +12,6 @@ const app = express()
 const port = 3000
 const USER_ROLE = "User";
 const ADMIN_ROLE = "Admin";
-
-
-//Schemas
-const adminSchema = mongoose.Schema({
-  username: String,
-  password: String
-});
-
-const userSchema = mongoose.Schema({
-  username: String,
-  password: String,
-  purchasedCourses: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course'
-  }]
-});
-
-const courseSchema = mongoose.Schema({
-  title: String,
-  description: String,
-  published: Boolean,
-  price: Number,
-  imageLink: String
-});
-
-//Models
-const Admin = mongoose.model("Admin", adminSchema);
-const User = mongoose.model("User", userSchema);
-const Course = mongoose.model("Course", courseSchema);
-
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
