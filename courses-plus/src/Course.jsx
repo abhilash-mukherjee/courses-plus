@@ -1,10 +1,12 @@
-import { Typography } from "@mui/material";
+import * as React from 'react';
+import { Grid, Typography, Card, TextField, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { json, useParams } from "react-router-dom";
-
+import { CourseCard } from './Courses';
+import { Container } from "@mui/system";
 function Course() {
     let { courseId } = useParams();
-    console.log('id: ',courseId);
+    console.log('id: ', courseId);
     const [courses, setCourses] = useState([]);
     useEffect(() => {
         fetch('http://localhost:3000/admin/courses', {
@@ -21,13 +23,14 @@ function Course() {
     }, [])
     return (
         <>
-            <Test courses={courses} courseId={courseId}></Test>
+            <EditCourseContainer courses={courses} courseId={courseId} setCourses = {setCourses}></EditCourseContainer>
         </>
     )
 }
 
-function Test(props) {
+function EditCourseContainer(props) {
     const courses = props.courses;
+    const setCourses = props.setCourses;
     console.log(courses)
     if (courses && courses.length > 0) {
         const course = courses.find(c => c._id === props.courseId);
@@ -41,9 +44,26 @@ function Test(props) {
         else {
             return (
                 <>
-                    <div>
-                        {course.title}
-                    </div>
+                    <Container>
+                        <Grid 
+                        container 
+                        justifyContent={'center'}
+                        spacing={4}
+                        >
+                            <Grid 
+                            item
+                            xs = {11} sm = {10} md= {6} lg={4}
+                            >
+                                <CourseCard course={course}></CourseCard>
+                            </Grid>
+                            <Grid 
+                            item
+                            xs = {11} sm = {10} md= {6} lg={4}
+                            >
+                                <UpdateCourse course = {course} setCourses = {setCourses} courses = {courses}></UpdateCourse>
+                            </Grid>
+                        </Grid>
+                    </Container>
                 </>
             )
         }
@@ -52,6 +72,121 @@ function Test(props) {
         <>
             <div>
                 Loading...
+            </div>
+        </>
+    )
+}
+
+
+function UpdateCourse(props) {
+
+    const course = props.course;
+    const courses = props.courses;
+    const setCourses = props.setCourses;
+    const [title, setTitle] = React.useState(course.title);
+    const [description, setDescription] = React.useState(course.description);
+    const [price, setPrice] = React.useState(course.price);
+    const [imageLink, setImageLink] = React.useState(course.imageLink);
+    return (
+        <>
+            <div style={{
+                display: "flex",
+                justifyContent: "center",
+            }}>
+                <Card style={
+                    {
+                        width: "400px",
+                        padding: "20px"
+                    }
+                }>
+                    <TextField
+                        label="Title"
+                        variant="outlined"
+                        fullWidth="true"
+                        required={true}
+                        defaultValue={course.title}
+                        onChange={(e)=>{
+                            setTitle(e.target.value)
+                        }}
+                    />
+
+                    <br></br>
+                    <br></br>
+                    <TextField
+                        label="Description"
+                        variant="outlined"
+                        fullWidth="true"
+                        required={true}
+                        defaultValue={course.description}
+                        onChange={(e)=>{
+                            setDescription(e.target.value)
+                        }}
+                    />
+                    <br></br>
+                    <br></br>
+                    <TextField
+                        label="Price (INR)"
+                        variant="outlined"
+                        fullWidth="true"
+                        required={true}
+                        type='number'
+                        defaultValue={course.price}
+                        onChange={(e)=>{
+                            setPrice(e.target.value)
+                        }}
+                    />
+                    <br></br>
+                    <br></br>
+                    <TextField
+                        label="Image Link"
+                        variant="outlined"
+                        fullWidth="true"
+                        required={true}
+                        defaultValue={course.imageLink}
+                        onChange={(e)=>{
+                            setImageLink(e.target.value)
+                        }}
+                    />
+                    <br></br>
+                    <br></br>
+                    <Button
+                        variant="contained"
+                        size={'large'}
+                        onClick={async ()=>{
+                            setCourses(courses.map(c =>{
+                                if(c.id === course.id){
+                                    c.title = title;
+                                    c.description = description;
+                                    c.imageLink = imageLink;
+                                    c.price = price;
+                                }
+                                return c;
+                            }));
+
+                            const data = {
+                                title,
+                                description,
+                                published: true,
+                                price,
+                                imageLink,
+                            }
+                            const response = await fetch('http://localhost:3000/admin/courses/' + course._id, {
+                                method: 'PUT',
+                                mode: 'cors',
+                                headers: {
+                                    authorization: "Bearer " + localStorage.getItem('token'),
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(data)
+                            });
+                            
+                            response.json().then((body) => {
+                                console.log(body.message)
+                            })
+                            
+                        }}
+                    >Update Course</Button>
+                </Card>
             </div>
         </>
     )

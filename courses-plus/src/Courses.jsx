@@ -32,7 +32,7 @@ function Courses() {
                     {courses.map(course => {
                         return (
                             <>
-                                <Grid item xs={11} sm={9} md={6} lg={4} ><Course course={course}></Course></Grid>
+                                <Grid item xs={11} sm={9} md={6} lg={4} ><CourseCard course={course}></CourseCard></Grid>
                             </>
                         )
                     })}
@@ -42,7 +42,7 @@ function Courses() {
     )
 }
 
-function Course(props) {
+export function CourseCard(props) {
     return (
         <>
             <Card style={{

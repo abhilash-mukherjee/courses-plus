@@ -79,11 +79,8 @@ async function authenticateAdmin(request, response, next) {
     try {
       const decoded = jwt.verify(token, process.env.SECRET_KEY_ADMIN);
       if (decoded) {
-        console.log(decoded);
         const admin = await Admin.findOne({ username: decoded.username });
         const allUsers = await Admin.find({});
-        console.log(admin);
-        console.log(allUsers);
         if (admin) {
           request.admin = admin;
           next();
@@ -170,6 +167,7 @@ app.post('/admin/courses', authenticateAdmin, async (req, res) => {
 
 app.put('/admin/courses/:courseId', authenticateAdmin, async (req, res) => {
   try {
+    console.log(req.params.courseId);
     const course = await Course.findByIdAndUpdate(req.params.courseId, req.body, { new: true });
     if (!course) {
       res.status(403).json({message: 'Course not found'});
