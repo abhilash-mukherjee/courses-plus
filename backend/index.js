@@ -2,7 +2,9 @@
 const express = require('express')
 const mongoose = require('mongoose');
 const { Admin, User, Course } = require('./db');
+const {ADMIN_ROLE, USER_ROLE} = require('./constants/userRoles.js')
 const {authenticateAdmin, authenticateUser} = require('./middlewares/auth.js')
+const {generateJWT} = require('./helpers/jwt.js')
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -11,8 +13,7 @@ require('dotenv').config();
 
 const app = express()
 const port = 3000
-const USER_ROLE = "User";
-const ADMIN_ROLE = "Admin";
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
@@ -21,10 +22,6 @@ app.listen(port, () => {
 app.use(bodyParser.json());
 app.use(cors());
 
-function generateJWT(username, role) {
-  const token = jwt.sign({ username }, role === USER_ROLE ? process.env.SECRET_KEY_USER : process.env.SECRET_KEY_ADMIN, { expiresIn: '1h' });
-  return token;
-}
 
 //Admin Routes
 
