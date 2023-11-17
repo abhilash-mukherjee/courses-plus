@@ -11,6 +11,7 @@ function AddCourse() {
     const [title, setTitle] = React.useState("");
     const [description, setDescription] = React.useState("");
     const [price, setPrice] = React.useState(0);
+    const [imageLink, setImageLink] = React.useState("");
     return (
         <>
             <div style={{
@@ -68,6 +69,17 @@ function AddCourse() {
                         />
                         <br></br>
                         <br></br>
+                        <TextField
+                            label="Image Link"
+                            variant="outlined"
+                            fullWidth="true"
+                            required={true}
+                            onChange={e => {
+                                setImageLink(e.target.value)
+                            }}
+                        />
+                        <br></br>
+                        <br></br>
                         <Button
                             variant="contained"
                             size={'large'}
@@ -80,7 +92,7 @@ function AddCourse() {
                                         description,
                                         published: true,
                                         price,
-                                        imagLink: ""
+                                        imageLink
                                     }
                                     const response = await fetch('http://localhost:3000/admin/courses', {
                                         method: 'POST',
