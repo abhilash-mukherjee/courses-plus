@@ -4,12 +4,12 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import { Typography } from '@mui/material';
-
+import axios from 'axios'
 
 
 function Login() {
-    const [email,setEmail] = React.useState("");
-    const [password,setPassword] = React.useState("");
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
     return (
         <div style={{
             paddingTop: "140px"
@@ -36,7 +36,7 @@ function Login() {
                         label="Username"
                         variant="outlined"
                         fullWidth="true"
-                        onChange={(e)=>{
+                        onChange={(e) => {
                             setEmail(e.target.value);
                         }}
                     />
@@ -47,8 +47,8 @@ function Login() {
                         label="Password"
                         variant="outlined"
                         fullWidth="true"
-                        type= {'password'}
-                        onChange={(e)=>{
+                        type={'password'}
+                        onChange={(e) => {
                             setPassword(e.target.value);
                         }}
                     />
@@ -59,36 +59,35 @@ function Login() {
                         size={'large'}
                         onClick={
                             async () => {
-                                const data = {
-                                    username: email,
-                                    password
-                                };
-                                const response = await fetch('http://localhost:3000/admin/login/',
-                                    {
-                                        method: "POST",
-                                        mode: "cors",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                        body: JSON.stringify(data)
-                                    })
-                                if(response.status ===200){
-                                    response.json().then(body => {
-                                        localStorage.setItem('token',body.token);
+                                try {
+                                    const response = await axios.post('http://localhost:3000/admin/login/',
+                                        {
+                                            username: email,
+                                            password
+                                        }
+                                    );
+
+                                    if (response.status === 200) {
+                                        let data = response.data;
+                                        localStorage.setItem('token', data.token);
                                         window.location = '/';
-                                    });
+
+                                    }
+                                    else {
+                                        console.log("ERROR");
+                                    }
                                 }
-                                else{
-                                    console.log("ERROR");
+                                catch(e){
+                                    console.log(e.message);
                                 }
-                                    
+
                             }
                         }
-                        >Log In</Button>
+                    >Log In</Button>
                 </Card>
             </div>
-            </div>
-            )
+        </div>
+    )
 }
 
-            export default Login;
+export default Login;

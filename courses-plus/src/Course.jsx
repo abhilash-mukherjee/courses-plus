@@ -4,22 +4,19 @@ import { useEffect, useState } from "react";
 import { json, useParams } from "react-router-dom";
 import CourseCard from './CourseCard';
 import { Container } from "@mui/system";
+import axios from 'axios';
 function Course() {
     let { courseId } = useParams();
     console.log('id: ', courseId);
     const [courses, setCourses] = useState([]);
     useEffect(() => {
-        fetch('http://localhost:3000/admin/courses', {
+        axios('http://localhost:3000/admin/courses', {
             mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        }).then(response => {
-            response.json().then(body => {
-                setCourses(body.courses);
-            })
-        })
+        }).then(response => setCourses(response.data.courses))
     }, [])
     return (
         <>

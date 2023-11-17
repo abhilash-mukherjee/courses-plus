@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import { Typography } from '@mui/material';
-
+import axios from 'axios';
 
 function Signup() {
     const [email, setEmail] = React.useState("");
@@ -59,24 +59,16 @@ function Signup() {
                         size={'large'}
                         onClick={
                             async () => {
-                                const data = {
-                                    username: email,
+                                const response = await axios.post('http://localhost:3000/admin/signup/',
+                                {
+                                    username:email,
                                     password
-                                };
-                                const response = await fetch('http://localhost:3000/admin/signup/',
-                                    {
-                                        method: "POST",
-                                        mode: "cors",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                        body: JSON.stringify(data)
-                                    })
+                                }
+                                )
                                 if(response.status ===200){
-                                    response.json().then(body => {
-                                        localStorage.setItem('token',body.token);
-                                        window.location = '/';
-                                    });
+                                    let data = response.data;
+                                    localStorage.setItem('token',data.token);
+                                    window.location = '/';            
                                 }
                                 else{
                                     console.log("ERROR");
