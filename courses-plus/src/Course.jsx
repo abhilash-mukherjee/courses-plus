@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Grid, Typography, Card, TextField, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { json, useParams } from "react-router-dom";
-import { CourseCard } from './Courses';
+import CourseCard from './CourseCard';
 import { Container } from "@mui/system";
 function Course() {
     let { courseId } = useParams();
@@ -54,7 +54,7 @@ function EditCourseContainer(props) {
                             item
                             xs = {11} sm = {10} md= {6} lg={4}
                             >
-                                <CourseCard course={course}></CourseCard>
+                                <CourseCard course={course} showEdit={false}></CourseCard>
                             </Grid>
                             <Grid 
                             item

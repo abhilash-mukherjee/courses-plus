@@ -1,5 +1,6 @@
-import { Card, Grid, Typography } from "@mui/material";
+import {  Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import CourseCard  from "./CourseCard";
 
 function Courses() {
     const [courses, setCourses] = useState([]);
@@ -32,7 +33,7 @@ function Courses() {
                     {courses.map(course => {
                         return (
                             <>
-                                <Grid item xs={11} sm={9} md={6} lg={4} ><CourseCard course={course}></CourseCard></Grid>
+                                <Grid item xs={11} sm={9} md={6} lg={4} ><CourseCard course={course} showEdit = {true}></CourseCard></Grid>
                             </>
                         )
                     })}
@@ -42,29 +43,5 @@ function Courses() {
     )
 }
 
-export function CourseCard(props) {
-    return (
-        <>
-            <Card style={{
-                marginBottom: "20px",
-                height: '300px',
-                paddingInline: "8px",
-                paddingBlock: "16px",
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-                <Typography variant="h6" textAlign={'center'}>{props.course.title}</Typography>
-                <br></br>
-                <img src={props.course.imageLink} style={{
-                    height:'60%',
-                    maxWidth: '80%',
-                    alignSelf:'center'
-                }}></img>
-                <br></br>
-                <Typography textAlign={'center'}>{props.course.description}</Typography>
-            </Card>
-        </>
-    )
-}
 
 export default Courses;

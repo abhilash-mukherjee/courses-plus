@@ -102,6 +102,24 @@ function LoggedInCTAs(props) {
                 </div>
                 <div style={{ marginRight: "8px" }}>
                     <Button
+                        variant="text"
+                        onClick={
+                            () => {
+                                props.navigate('/addCourse');
+                            }
+                        }
+                    >Add Course</Button>
+
+                    <Button
+                        variant="text"
+                        onClick={
+                            () => {
+                                props.navigate('/courses')
+                            }
+                        }
+                    >Courses</Button>
+                    
+                    <Button
                         variant="contained"
                         onClick={
                             () => {
@@ -109,7 +127,8 @@ function LoggedInCTAs(props) {
                                 window.location = '/';
                             }
                         }
-                    >Logout</Button></div>
+                    >Logout</Button>
+                    </div>
             </div>
         </>
     )
