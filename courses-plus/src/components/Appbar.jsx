@@ -1,30 +1,28 @@
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-
-function Appbar() {
-    const [username, setUsername] = useState("");
+import axios  from "axios";
+function Appbar({ userEmail, setUserEmail }) {
     const navigate = useNavigate();
     useEffect(() => {
-        fetch('http://localhost:3000/admin/me/', {
-            mode:"cors",
+        init();
+    }, [])
+
+    async function init() {
+        const response = await axios.get('http://localhost:3000/admin/me/', {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("token"),
                 "Content-Type": "application/json"
             }
-        }).then(
-            (response) => {
-                if (response && response.status === 200) {
-                    response.json().then((body) => {
-                        console.log(body.username);
-                        setUsername(body.username);
-                    })
-                }
-                else {
-                    console.log("couldn't fetch account details",response);
-                }
-            })
-    }, [])
+        })
+        if (response && response.status === 200) {
+                setUserEmail(response.data.username);
+        }
+        else {
+            console.log("couldn't fetch account details", response);
+        }
+
+    }
     return (
         <>
             <div style={{
@@ -33,32 +31,38 @@ function Appbar() {
                 padding: "10px"
             }}>
                 <div>
-                    <Typography>Course Plus</Typography>
+                    <Button
+                        onClick={
+                            () => {
+                                navigate('/')
+                            }
+                        }
+                    >Course Plus</Button>
                 </div>
-                <TopRight username={username} navigate = {navigate}></TopRight>
+                <TopRight username={userEmail} navigate={navigate}></TopRight>
             </div>
         </>
     )
 
 }
 
-function TopRight(props){
+function TopRight(props) {
 
-        if (!props.username) {
-            return (
-                <>
-                    <SignupCTAs navigate={props.navigate}></SignupCTAs>
-                </>
-            )
-        }
-        else {
-            return (
-                <>
-                    <LoggedInCTAs navigate={props.navigate} username ={props.username}></LoggedInCTAs>
-                </>
-            )
-        }
-    
+    if (!props.username) {
+        return (
+            <>
+                <SignupCTAs navigate={props.navigate}></SignupCTAs>
+            </>
+        )
+    }
+    else {
+        return (
+            <>
+                <LoggedInCTAs navigate={props.navigate} username={props.username}></LoggedInCTAs>
+            </>
+        )
+    }
+
 }
 
 function SignupCTAs(props) {
@@ -94,11 +98,11 @@ function LoggedInCTAs(props) {
         <>
             <div style={{ display: "flex" }}>
                 <div style={{
-                    display:"flex",
+                    display: "flex",
                     alignContent: "center",
-                    marginRight:"16px"
+                    marginRight: "16px"
                 }}>
-                    <Typography>{props.username }</Typography>
+                    <Typography>{props.username}</Typography>
                 </div>
                 <div style={{ marginRight: "8px" }}>
                     <Button
@@ -118,7 +122,7 @@ function LoggedInCTAs(props) {
                             }
                         }
                     >Courses</Button>
-                    
+
                     <Button
                         variant="contained"
                         onClick={
@@ -128,7 +132,7 @@ function LoggedInCTAs(props) {
                             }
                         }
                     >Logout</Button>
-                    </div>
+                </div>
             </div>
         </>
     )
