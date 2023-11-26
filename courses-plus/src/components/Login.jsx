@@ -6,9 +6,12 @@ import Card from '@mui/material/Card';
 import { Typography } from '@mui/material';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '../store/atoms/user';
 
-function Login({setUserEmail}) {
+function Login() {
     const navigate = useNavigate();
+    const setUserEmail = useSetRecoilState(userState);
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     return (
@@ -71,7 +74,10 @@ function Login({setUserEmail}) {
                                     if (response.status === 200) {
                                         let data = response.data;
                                         localStorage.setItem('token', data.token);
-                                        setUserEmail(email)
+                                        setUserEmail({
+                                            email,
+                                            isLoading: false
+                                        })
                                         navigate('/');
                                     }
                                     else {

@@ -1,7 +1,10 @@
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-function Appbar({ userEmail, setUserEmail }) {
+import { useRecoilState } from "recoil";
+import { userState } from "../store/atoms/user";
+function Appbar() {
+    const [ userEmail, setUserEmail ] = useRecoilState(userState);
     const navigate = useNavigate();
     return (
         <>
@@ -28,7 +31,7 @@ function Appbar({ userEmail, setUserEmail }) {
 
 function TopRight(props) {
 
-    if (!props.username) {
+    if (!props.username.email) {
         return (
             <>
                 <SignupCTAs navigate={props.navigate}></SignupCTAs>
@@ -82,7 +85,7 @@ function LoggedInCTAs(props) {
                     alignContent: "center",
                     marginRight: "16px"
                 }}>
-                    <Typography>{props.username}</Typography>
+                    <Typography>{props.username.email}</Typography>
                 </div>
                 <div style={{ marginRight: "8px" }}>
                     <Button
@@ -108,7 +111,10 @@ function LoggedInCTAs(props) {
                         onClick={
                             () => {
                                 localStorage.setItem('token', undefined);
-                                props.setUserEmail(null)
+                                props.setUserEmail({
+                                    email: null,
+                                    isLoading: false
+                                });
                             }
                         }
                     >Logout</Button>

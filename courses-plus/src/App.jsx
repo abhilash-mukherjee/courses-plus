@@ -8,9 +8,11 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userState } from "./store/atoms/user";
 
 function App() {
-  const [userEmail, setUserEmail] = useState(null);
+  const [userEmail, setUserEmail] = useRecoilState(userState);
   useEffect(() => {
     init();
   }, [])
@@ -23,7 +25,10 @@ function App() {
       }
     })
     if (response && response.status === 200) {
-      setUserEmail(response.data.username);
+      setUserEmail({
+        email: response.data.username, 
+        isLoading: false
+      });
     }
     else {
       console.log("couldn't fetch account details", response);
@@ -44,7 +49,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage userEmail={userEmail}></LandingPage>} />
             <Route path="/login" element={<Login setUserEmail = {setUserEmail}></Login>} />
-            <Route path="/signup" element={<Signup setUserEmail={setUserEmail}></Signup>} />
+            <Route path="/signup" element={<Signup/>} />
             <Route path="/addcourse" element={<AddCourse></AddCourse>} />
             <Route path="/courses" element={<Courses></Courses>} />
             <Route path="/courses/:courseId" element={<Course></Course>} />
@@ -55,8 +60,5 @@ function App() {
   )
 }
 
-function init(){
-  
-}
 
 export default App
