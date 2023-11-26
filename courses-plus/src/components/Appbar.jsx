@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../store/atoms/user";
 import { userEmailState } from "../store/selectors/userEmail";
+import { isUserLoadingState } from "../store/selectors/isUserLoading";
 function Appbar() {
-    const [ userEmail, setUserEmail ] = useRecoilState(userState);
     const navigate = useNavigate();
     return (
         <>
@@ -23,26 +23,34 @@ function Appbar() {
                         }
                     >Course Plus</Button>
                 </div>
-                <TopRight username={userEmail} navigate={navigate} setUserEmail = {setUserEmail}></TopRight>
+                <TopRight />
             </div>
         </>
     )
 
 }
 
-function TopRight(props) {
-
-    if (!props.username.email) {
+function TopRight() {
+    const isUserLoading = useRecoilValue(isUserLoadingState);
+    const userEmail = useRecoilValue(userEmailState);
+    if(isUserLoading){
         return (
             <>
-                <SignupCTAs navigate={props.navigate}></SignupCTAs>
+                <Typography>Loading...</Typography>
+            </>
+        )
+    }
+    else if (!userEmail) {
+        return (
+            <>
+                <SignupCTAs />
             </>
         )
     }
     else {
         return (
             <>
-                <LoggedInCTAs navigate={props.navigate} username={props.username} setUserEmail = {props.setUserEmail}></LoggedInCTAs>
+                <LoggedInCTAs />
             </>
         )
     }

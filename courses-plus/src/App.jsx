@@ -18,22 +18,29 @@ function App() {
   }, [])
 
   async function init() {
-    const response = await axios.get('http://localhost:3000/admin/me/', {
-      headers: {
-        "Authorization": "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json"
+    try {
+      const response = await axios.get('http://localhost:3000/admin/me/', {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json"
+        }
+      })
+      if (response && response.status === 200) {
+        setUserEmail({
+          email: response.data.username,
+          isLoading: false
+        });
       }
-    })
-    if (response && response.status === 200) {
+      else {
+        console.log("couldn't fetch account details", response);
+      }
+    }
+    catch (e) {
       setUserEmail({
-        email: response.data.username, 
+        email: null,
         isLoading: false
       });
     }
-    else {
-      console.log("couldn't fetch account details", response);
-    }
-
   }
   return (
     <>
@@ -49,7 +56,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage></LandingPage>} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup/>} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/addcourse" element={<AddCourse></AddCourse>} />
             <Route path="/courses" element={<Courses></Courses>} />
             <Route path="/courses/:courseId" element={<Course></Course>} />
