@@ -24,7 +24,7 @@ function LandingPage({userEmail}) {
                         <Typography variant="h4"> CoursePlus Admin </Typography>
                         <Typography variant="h6" fontWeight={'700'}> Earn, Teach, and Grow </Typography>
                         <br></br>
-                        { !userEmail && <CTAs></CTAs>}
+                        { !userEmail.email && <CTAs></CTAs>}
                     </Grid>
                 </Grid>
             </div>
