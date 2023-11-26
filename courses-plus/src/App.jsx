@@ -45,7 +45,7 @@ function App() {
         flexDirection: 'column'
       }}>
         <Router>
-          <Appbar userEmail={userEmail} setUserEmail={setUserEmail}></Appbar>
+          <Appbar />
           <Routes>
             <Route path="/" element={<LandingPage userEmail={userEmail}></LandingPage>} />
             <Route path="/login" element={<Login />} />
