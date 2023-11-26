@@ -54,4 +54,9 @@ function App() {
     </>
   )
 }
+
+function init(){
+  
+}
+
 export default App
