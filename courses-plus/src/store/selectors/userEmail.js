@@ -6,6 +6,6 @@ export const userEmailState = selector({
     get: ({get}) => {
         const state = get(userState);
     
-        return userState.email;
+        return state.email;
       },
 })

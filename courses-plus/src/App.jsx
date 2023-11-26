@@ -12,7 +12,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "./store/atoms/user";
 
 function App() {
-  const [userEmail, setUserEmail] = useRecoilState(userState);
+  const [userLoginState, setUserEmail] = useRecoilState(userState);
   useEffect(() => {
     init();
   }, [])
@@ -47,7 +47,7 @@ function App() {
         <Router>
           <Appbar />
           <Routes>
-            <Route path="/" element={<LandingPage userEmail={userEmail}></LandingPage>} />
+            <Route path="/" element={<LandingPage></LandingPage>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup/>} />
             <Route path="/addcourse" element={<AddCourse></AddCourse>} />

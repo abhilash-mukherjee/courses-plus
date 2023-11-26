@@ -1,7 +1,10 @@
 import { Container, Grid, Card, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { userEmailState } from "../store/selectors/userEmail";
 
-function LandingPage({userEmail}) {
+function LandingPage() {
+    const userEmail = useRecoilValue(userEmailState)
     return (
         <>
             <div>
@@ -24,7 +27,7 @@ function LandingPage({userEmail}) {
                         <Typography variant="h4"> CoursePlus Admin </Typography>
                         <Typography variant="h6" fontWeight={'700'}> Earn, Teach, and Grow </Typography>
                         <br></br>
-                        { !userEmail.email && <CTAs></CTAs>}
+                        { !userEmail && <CTAs></CTAs>}
                     </Grid>
                 </Grid>
             </div>

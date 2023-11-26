@@ -104,7 +104,7 @@ function LoggedInCTAs(props) {
                                 props.navigate('/courses')
                             }
                         }
-                    >Courses</Button>
+                        >Courses</Button>
 
                     <Button
                         variant="contained"
@@ -115,6 +115,7 @@ function LoggedInCTAs(props) {
                                     email: null,
                                     isLoading: false
                                 });
+                                props.navigate('/');
                             }
                         }
                     >Logout</Button>

@@ -73,7 +73,10 @@ function Signup() {
                                 if(response.status ===200){
                                     let data = response.data;
                                     localStorage.setItem('token',data.token);
-                                    setUserEmail(email);
+                                    setUserEmail({
+                                        email,
+                                        isLoading: false
+                                    });
                                     navigate('/');
                                 }
                                 else{
