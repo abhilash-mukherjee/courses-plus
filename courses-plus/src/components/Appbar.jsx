@@ -49,7 +49,8 @@ function TopRight(props) {
 
 }
 
-function SignupCTAs(props) {
+function SignupCTAs() {
+    const navigate = useNavigate();
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -59,7 +60,7 @@ function SignupCTAs(props) {
                         onClick={
                             () => {
                                 console.log("Go to login");
-                                props.navigate("/login");
+                                navigate("/login");
                             }
                         }
                     >Login</Button></div>
@@ -67,7 +68,7 @@ function SignupCTAs(props) {
                     variant="outlined"
                     onClick={
                         () => {
-                            props.navigate("/signup");
+                            navigate("/signup");
                             console.log("Go to Signup");
                         }
                     }
