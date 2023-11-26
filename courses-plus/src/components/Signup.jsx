@@ -5,8 +5,10 @@ import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import { Typography } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function Signup() {
+function Signup({setUserEmail}) {
+    const navigate = useNavigate();
     const [email, setEmail] = React.useState("");
     const [password, setPasswprd] = React.useState("");
     return (
@@ -68,12 +70,12 @@ function Signup() {
                                 if(response.status ===200){
                                     let data = response.data;
                                     localStorage.setItem('token',data.token);
-                                    window.location = '/';            
+                                    setUserEmail(email);
+                                    navigate('/');
                                 }
                                 else{
                                     console.log("ERROR");
                                 }
-                                    
                             }
                         }
                     >Signup</Button>

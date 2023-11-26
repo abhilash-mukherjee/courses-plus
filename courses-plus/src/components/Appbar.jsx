@@ -1,28 +1,8 @@
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios  from "axios";
 function Appbar({ userEmail, setUserEmail }) {
     const navigate = useNavigate();
-    useEffect(() => {
-        init();
-    }, [])
-
-    async function init() {
-        const response = await axios.get('http://localhost:3000/admin/me/', {
-            headers: {
-                "Authorization": "Bearer " + localStorage.getItem("token"),
-                "Content-Type": "application/json"
-            }
-        })
-        if (response && response.status === 200) {
-                setUserEmail(response.data.username);
-        }
-        else {
-            console.log("couldn't fetch account details", response);
-        }
-
-    }
     return (
         <>
             <div style={{
@@ -39,7 +19,7 @@ function Appbar({ userEmail, setUserEmail }) {
                         }
                     >Course Plus</Button>
                 </div>
-                <TopRight username={userEmail} navigate={navigate}></TopRight>
+                <TopRight username={userEmail} navigate={navigate} setUserEmail = {setUserEmail}></TopRight>
             </div>
         </>
     )
@@ -58,7 +38,7 @@ function TopRight(props) {
     else {
         return (
             <>
-                <LoggedInCTAs navigate={props.navigate} username={props.username}></LoggedInCTAs>
+                <LoggedInCTAs navigate={props.navigate} username={props.username} setUserEmail = {props.setUserEmail}></LoggedInCTAs>
             </>
         )
     }
@@ -128,7 +108,7 @@ function LoggedInCTAs(props) {
                         onClick={
                             () => {
                                 localStorage.setItem('token', undefined);
-                                window.location = '/';
+                                props.setUserEmail(null)
                             }
                         }
                     >Logout</Button>

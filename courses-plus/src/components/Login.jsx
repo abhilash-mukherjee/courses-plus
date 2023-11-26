@@ -5,9 +5,10 @@ import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import { Typography } from '@mui/material';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
-
-function Login() {
+function Login({setUserEmail}) {
+    const navigate = useNavigate();
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     return (
@@ -70,8 +71,8 @@ function Login() {
                                     if (response.status === 200) {
                                         let data = response.data;
                                         localStorage.setItem('token', data.token);
-                                        window.location = '/';
-
+                                        setUserEmail(email)
+                                        navigate('/');
                                     }
                                     else {
                                         console.log("ERROR");
@@ -80,7 +81,6 @@ function Login() {
                                 catch(e){
                                     console.log(e.message);
                                 }
-
                             }
                         }
                     >Log In</Button>
