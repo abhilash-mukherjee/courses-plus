@@ -1,8 +1,9 @@
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../store/atoms/user";
+import { userEmailState } from "../store/selectors/userEmail";
 function Appbar() {
     const [ userEmail, setUserEmail ] = useRecoilState(userState);
     const navigate = useNavigate();
@@ -76,7 +77,10 @@ function SignupCTAs(props) {
     )
 }
 
-function LoggedInCTAs(props) {
+function LoggedInCTAs() {
+    const navigate = useNavigate();
+    const setUserEmail = useSetRecoilState(userState);
+    const email = useRecoilValue(userEmailState);
     return (
         <>
             <div style={{ display: "flex" }}>
@@ -85,14 +89,14 @@ function LoggedInCTAs(props) {
                     alignContent: "center",
                     marginRight: "16px"
                 }}>
-                    <Typography>{props.username.email}</Typography>
+                    <Typography>{email}</Typography>
                 </div>
                 <div style={{ marginRight: "8px" }}>
                     <Button
                         variant="text"
                         onClick={
                             () => {
-                                props.navigate('/addCourse');
+                                navigate('/addCourse');
                             }
                         }
                     >Add Course</Button>
@@ -101,7 +105,7 @@ function LoggedInCTAs(props) {
                         variant="text"
                         onClick={
                             () => {
-                                props.navigate('/courses')
+                                navigate('/courses')
                             }
                         }
                         >Courses</Button>
@@ -111,11 +115,11 @@ function LoggedInCTAs(props) {
                         onClick={
                             () => {
                                 localStorage.setItem('token', undefined);
-                                props.setUserEmail({
+                                setUserEmail({
                                     email: null,
                                     isLoading: false
                                 });
-                                props.navigate('/');
+                                navigate('/');
                             }
                         }
                     >Logout</Button>
