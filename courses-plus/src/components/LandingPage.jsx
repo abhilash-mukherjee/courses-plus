@@ -2,9 +2,11 @@ import { Container, Grid, Card, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userEmailState } from "../store/selectors/userEmail";
+import { isUserLoadingState } from "../store/selectors/isUserLoading";
 
 function LandingPage() {
-    const userEmail = useRecoilValue(userEmailState)
+    const userEmail = useRecoilValue(userEmailState);
+    const isLoading = useRecoilValue(isUserLoadingState);
     return (
         <>
             <div>
@@ -27,7 +29,8 @@ function LandingPage() {
                         <Typography variant="h4"> CoursePlus Admin </Typography>
                         <Typography variant="h6" fontWeight={'700'}> Earn, Teach, and Grow </Typography>
                         <br></br>
-                        { !userEmail && <CTAs></CTAs>}
+                        {isLoading && <Typography>Loading...</Typography>}
+                        { !isLoading && !userEmail && <CTAs></CTAs>}
                     </Grid>
                 </Grid>
             </div>
