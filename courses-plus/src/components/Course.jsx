@@ -20,7 +20,7 @@ function Course() {
     }, [])
     return (
         <>
-            <EditCourseContainer courses={courses} courseId={courseId} setCourses = {setCourses}></EditCourseContainer>
+            <EditCourseContainer courses={courses} courseId={courseId} setCourses={setCourses}></EditCourseContainer>
         </>
     )
 }
@@ -41,23 +41,60 @@ function EditCourseContainer(props) {
         else {
             return (
                 <>
-                    <Container>
-                        <Grid 
-                        container 
-                        justifyContent={'center'}
-                        spacing={4}
+                    <div style={{
+                        height: '200px',
+                        backgroundColor: '#04364A',
+                        marginBottom: '20px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+
+                        <Grid
+                            container
+                            alignContent={'center'}
+                            justifyContent={'center'}
+                            rowGap={1}
+                            alignItems={'center'}
                         >
-                            <Grid 
-                            item
-                            xs = {11} sm = {10} md= {6} lg={4}
+                            <Grid item xs={10} sm={10} md={8} lg={6}>
+                                <Typography
+                                    variant='h3'
+                                    course={course}
+                                    color={'white'}
+                                >
+                                    {course.title}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={10} sm={10} md={3} lg={3} >
+                                <Typography
+                                    variant='h5'
+                                    course={course}
+                                    color={'white'}
+                                    textAlign={'right'} >
+                                    {'INR ' + course.price}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <Container>
+                        <Grid
+                            container
+                            justifyContent={'center'}
+                            spacing={4}
+                        >
+                            <Grid
+                                item
+                                xs={11} sm={10} md={6} lg={4}
                             >
                                 <CourseCard course={course} showEdit={false}></CourseCard>
                             </Grid>
-                            <Grid 
-                            item
-                            xs = {11} sm = {10} md= {6} lg={4}
+                            <Grid
+                                item
+                                xs={11} sm={10} md={6} lg={4}
                             >
-                                <UpdateCourse course = {course} setCourses = {setCourses} courses = {courses}></UpdateCourse>
+                                <UpdateCourse course={course} setCourses={setCourses} courses={courses}></UpdateCourse>
                             </Grid>
                         </Grid>
                     </Container>
@@ -102,7 +139,7 @@ function UpdateCourse(props) {
                         fullWidth="true"
                         required={true}
                         defaultValue={course.title}
-                        onChange={(e)=>{
+                        onChange={(e) => {
                             setTitle(e.target.value)
                         }}
                     />
@@ -115,7 +152,7 @@ function UpdateCourse(props) {
                         fullWidth="true"
                         required={true}
                         defaultValue={course.description}
-                        onChange={(e)=>{
+                        onChange={(e) => {
                             setDescription(e.target.value)
                         }}
                     />
@@ -128,7 +165,7 @@ function UpdateCourse(props) {
                         required={true}
                         type='number'
                         defaultValue={course.price}
-                        onChange={(e)=>{
+                        onChange={(e) => {
                             setPrice(e.target.value)
                         }}
                     />
@@ -140,7 +177,7 @@ function UpdateCourse(props) {
                         fullWidth="true"
                         required={true}
                         defaultValue={course.imageLink}
-                        onChange={(e)=>{
+                        onChange={(e) => {
                             setImageLink(e.target.value)
                         }}
                     />
@@ -149,9 +186,9 @@ function UpdateCourse(props) {
                     <Button
                         variant="contained"
                         size={'large'}
-                        onClick={async ()=>{
-                            setCourses(courses.map(c =>{
-                                if(c.id === course.id){
+                        onClick={async () => {
+                            setCourses(courses.map(c => {
+                                if (c.id === course.id) {
                                     c.title = title;
                                     c.description = description;
                                     c.imageLink = imageLink;
@@ -176,11 +213,11 @@ function UpdateCourse(props) {
                                 },
                                 body: JSON.stringify(data)
                             });
-                            
+
                             response.json().then((body) => {
                                 console.log(body.message)
                             })
-                            
+
                         }}
                     >Update Course</Button>
                 </Card>
